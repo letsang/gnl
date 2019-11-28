@@ -6,53 +6,35 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 14:54:32 by jtsang            #+#    #+#             */
-/*   Updated: 2019/11/26 17:51:36 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/11/28 09:38:35 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <string.h>
+#include "get_next_line.h"
 
-#include <stdio.h>
-
-int	get_next_line(int fd, char **line);
-
-static void ft_putstr(char *s)
+int	main(int ac, char **av)
 {
-	int  i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(1, &s[i], 1);
-		i++;
-	}
-}
-
-int	main()
-{
+	(void)ac;
 	int fd;
-	static char **line;
+	static char *line;
 
 	line = NULL;
-	fd = open("pokemon", O_RDONLY);
+	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr("open() error");
+		printf("%s", "open() error");
 		return (1);
 	}
-	while (get_next_line(fd, line))
+		
+	while (get_next_line(fd, &line))
 	{
-		get_next_line(fd, line);
-//		ft_putstr(*line);
+		printf("%s", line);
+		printf("%c", '\n');
 	}
+	
 	if (close(fd) == -1)
 	{
-		ft_putstr("close() error");
+		printf("%s", "close() error");
 		return (1);
 	}
 	return (0);
