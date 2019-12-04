@@ -6,83 +6,106 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/11/28 10:06:29 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/04 14:48:48 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*get_stock(int fd)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	unsigned int	i;
+	char			*sub;
+
+	if (!s)
+		return (NULL);
+	if (!(sub = (char*)malloc((len + 1) * sizeof(char))))
+		return (NULL);
+	i = 0;
+	while (((size_t)start <= ft_strlen(s)) && s[start] && (i < len))
+	{
+		sub[i] = s[start];
+		start++;
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	if (c == 0)
+	{
+		while (*s)
+			s++;
+		return ((char *)s);
+	}
+	while (*s && *s != c)
+		s++;
+	if (*s == 0)
+		return (0);
+	return ((char *)s);
+}
+
+char	*get_stock(int fd, char **stock)
 {
 	int				ret;
-	size_t			buffer;
 	char			*buf;
-	static char		*stock;
 
-	buffer = BUF_SIZE + 1;
-	if (!(buf = (char *)malloc(sizeof(char) * buffer)))
+	ret = 1;
+	if (!(buf = (char *)malloc(sizeof(char) * BUF_SIZE + 1)))
 		return (NULL);
-	while ((ret = read(fd, buf, BUF_SIZE)) > 0)
+	while (!(ft_strchr(*stock, '\n')) && ret)
 	{
-		if (ret == -1)
+		if ((ret = read(fd, buf, BUF_SIZE)) < 0)
 		{
 			free(buf);
-			free(stock);
 			return (NULL);
 		}
 		buf[ret] = '\0';
-		if (!stock)
-		{
-			if (!(stock = (char *)malloc(sizeof(char) * 1)))
-				return (NULL);
-			stock[0] = '\0';
-			stock = ft_strjoin(stock, buf);
-		}
-		else
-			stock = ft_strjoin(stock, buf);
-		if (ret == 0)
-		{
-			buf[ft_strlen(buf)] = '\0';
-			stock = ft_strjoin(stock, buf);
-			free(buf);
-		}
-		free(buf);
-		if (!(buf = (char *)malloc(sizeof(char) * (buffer))))
-			return (NULL);
+		*stock = ft_strjoin(*stock, buf);
 	}
-	return (stock);
+	free(buf);
+	return (*stock);
 }
 
-char		**get_stock_split(char *stock)
+char	*get_newline(char **stock)
 {
-	char	**stock_split;
+	char			*newline;
+	char			*newstock;
 
-	stock_split = ft_split(stock, '\n');
-	return (stock_split);
-}
-
-int			get_next_line(int fd, char **line)
-{
-	static char **stock;
-	static int	i = 0;
-
-	if (i == 0 && !stock)
+	newline = NULL;
+	newstock = ft_strchr(*stock, '\n');
+	if (newstock)
 	{
-		stock = get_stock_split(get_stock(fd));
-		*line = *(stock + i);
-		i++;
-		return (1);
+		newline = ft_substr(*stock, 0, ft_strlen(*stock) - ft_strlen(newstock));
+		*stock = newstock + 1;
 	}
-	if (i != 0 && stock[i])
-	{
-		*line = *(stock + i);
-		i++;
-		if (i > 0 && stock + i)
-			free(*(stock + i - 1));
-		return (1);
-	}
-	if (i != 0 && stock[i] == NULL)
-		return (0);
 	else
+		newline = ft_strdup(*stock);
+	if (*stock == 0)
+	{
+		free(*stock);
+		*stock = NULL;
+	}
+	return (newline);
+}
+
+int		get_next_line(int fd, char **line)
+{
+	static char		*stock = NULL;
+
+	if (fd < 0 || !line ||
+			(stock == NULL && !(stock = ft_strdup(""))))
 		return (-1);
+	if (!(stock = get_stock(fd, &stock)))
+		return (-1);
+	if (*stock)
+	{
+		if (!(*line = get_newline(&stock)))
+			return (-1);
+		printf("STOCK : %s\n", stock);
+		return (1);
+	}
+	return (0);
 }
