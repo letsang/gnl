@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/04 14:48:48 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/05 15:30:40 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,17 @@ char	*ft_strchr(const char *s, int c)
 
 char	*get_stock(int fd, char **stock)
 {
+	char			buf[BUF_SIZE + 1];
 	int				ret;
-	char			*buf;
 
 	ret = 1;
-	if (!(buf = (char *)malloc(sizeof(char) * BUF_SIZE + 1)))
-		return (NULL);
-	while (!(ft_strchr(*stock, '\n')) && ret)
+	while (((!ret && !(ft_strchr(*stock, '\0'))) ||
+					(ret && !(ft_strchr(*stock, '\n')))))
 	{
-		if ((ret = read(fd, buf, BUF_SIZE)) < 0)
-		{
-			free(buf);
-			return (NULL);
-		}
+		ret = read(fd, buf, BUF_SIZE);
 		buf[ret] = '\0';
 		*stock = ft_strjoin(*stock, buf);
 	}
-	free(buf);
 	return (*stock);
 }
 
@@ -75,16 +69,14 @@ char	*get_newline(char **stock)
 	char			*newstock;
 
 	newline = NULL;
-	newstock = ft_strchr(*stock, '\n');
-	if (newstock)
+	if ((newstock = ft_strchr(*stock, '\n')))
 	{
 		newline = ft_substr(*stock, 0, ft_strlen(*stock) - ft_strlen(newstock));
 		*stock = newstock + 1;
 	}
-	else
-		newline = ft_strdup(*stock);
-	if (*stock == 0)
+	else if ((newstock = ft_strchr(*stock, '\0')))
 	{
+		newline = ft_strdup(*stock);
 		free(*stock);
 		*stock = NULL;
 	}
@@ -104,7 +96,6 @@ int		get_next_line(int fd, char **line)
 	{
 		if (!(*line = get_newline(&stock)))
 			return (-1);
-		printf("STOCK : %s\n", stock);
 		return (1);
 	}
 	return (0);
