@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 07:01:56 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/04 14:36:12 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/07 14:13:15 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #		include <stdlib.h>
 #		include <string.h>
 #		include <unistd.h>
-
-#define BUF_SIZE 50
 
 #include <fcntl.h>
 #include <sys/types.h>

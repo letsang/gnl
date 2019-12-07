@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/07 12:04:31 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/07 14:37:28 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,15 @@ char	*ft_strchr(const char *s, int c)
 
 char	*get_stock(int fd, char **stock)
 {
-	char			buf[BUF_SIZE + 1];
+	char			*buf;
 	int				ret;
 
 	ret = 1;
+	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+		return (NULL);
 	while (ret && !(ft_strchr(*stock, '\n')))
 	{
-		if ((ret = read(fd, buf, BUF_SIZE)) < 0)
+		if ((ret = read(fd, buf, BUFFER_SIZE)) < 0)
 		{
 			free(buf);
 			free(*stock);
@@ -91,7 +93,7 @@ int		get_next_line(int fd, char **line)
 {
 	static char		*stock = NULL;
 
-	if (fd < 0 || !line ||
+	if (fd < 0 || !line || BUFFER_SIZE == 0 ||
 			(stock == NULL && !(stock = ft_strdup(""))))
 		return (-1);
 	if (!(stock = get_stock(fd, &stock)))
@@ -100,7 +102,7 @@ int		get_next_line(int fd, char **line)
 	{
 		if (!(*line = get_newline(&stock)))
 			return (-1);
-		return (1);
+		return (stock ? 1 : 0);
 	}
 	else
 		*line = ft_strdup("");
