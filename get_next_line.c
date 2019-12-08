@@ -50,13 +50,15 @@ char	*ft_strchr(const char *s, int c)
 char	*get_stock(int fd, char **stock)
 {
 	char			*buf;
+	char			*tmp;
 	int				ret;
 
 	ret = 1;
-	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
-		return (NULL);
+	buf = NULL;
 	while (ret && !(ft_strchr(*stock, '\n')))
 	{
+		if (buf == NULL && !(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+			return (NULL);
 		if ((ret = read(fd, buf, BUFFER_SIZE)) < 0)
 		{
 			free(buf);
@@ -64,7 +66,10 @@ char	*get_stock(int fd, char **stock)
 			return (NULL);
 		}
 		buf[ret] = '\0';
-		*stock = ft_strjoin(*stock, buf);
+		tmp = *stock;
+		*stock = ft_strjoin(tmp, buf);
+		free(buf);
+		buf = NULL;
 	}
 	return (*stock);
 }
