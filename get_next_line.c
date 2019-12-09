@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/09 09:14:50 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/09 09:25:33 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,12 @@ char	*ft_strchr(const char *s, int c)
 char	*get_stock(int fd, char **stock)
 {
 	char			*buf;
-	char			*tmp;
 	int				ret;
 
 	ret = 1;
-<<<<<<< HEAD
 	while (ret && !(ft_strchr(*stock, '\n')))
 	{
 		buf = NULL;
-=======
-	buf = NULL;
-	while (ret && !(ft_strchr(*stock, '\n')))
-	{
->>>>>>> 41f6b0ae5301d70806e6481591e005ea9139ef00
 		if (buf == NULL && !(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
 			return (NULL);
 		if ((ret = read(fd, buf, BUFFER_SIZE)) < 0)
@@ -72,15 +65,8 @@ char	*get_stock(int fd, char **stock)
 			return (NULL);
 		}
 		buf[ret] = '\0';
-<<<<<<< HEAD
 		*stock = ft_strjoin(*stock, buf);
 		free(buf);
-=======
-		tmp = *stock;
-		*stock = ft_strjoin(tmp, buf);
-		free(buf);
-		buf = NULL;
->>>>>>> 41f6b0ae5301d70806e6481591e005ea9139ef00
 	}
 	return (*stock);
 }
