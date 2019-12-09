@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/07 14:37:28 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/09 09:14:50 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ char	*get_stock(int fd, char **stock)
 	int				ret;
 
 	ret = 1;
-	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
-		return (NULL);
 	while (ret && !(ft_strchr(*stock, '\n')))
 	{
+		buf = NULL;
+		if (buf == NULL && !(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+			return (NULL);
 		if ((ret = read(fd, buf, BUFFER_SIZE)) < 0)
 		{
 			free(buf);
@@ -65,6 +66,7 @@ char	*get_stock(int fd, char **stock)
 		}
 		buf[ret] = '\0';
 		*stock = ft_strjoin(*stock, buf);
+		free(buf);
 	}
 	return (*stock);
 }
@@ -83,7 +85,6 @@ char	*get_newline(char **stock)
 	else
 	{
 		newline = ft_strdup(*stock);
-		free(*stock);
 		*stock = NULL;
 	}
 	return (newline);
@@ -105,6 +106,9 @@ int		get_next_line(int fd, char **line)
 		return (stock ? 1 : 0);
 	}
 	else
+	{
+		free(*line);
 		*line = ft_strdup("");
+	}
 	return (0);
 }
