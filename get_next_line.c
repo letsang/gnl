@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/11 15:50:49 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 16:13:34 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*get_stock(int fd, char **stock)
 		free(tmp);
 		free(buf);
 	}
+	printf("\nSTOCK 1 : %s\n", *stock);
 	return (*stock);
 }
 
@@ -105,6 +106,6 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 	if (stock && !(*line = get_newline(&stock)))
 		return (-1);
-//	printf("\nSTOCK : %s\n", stock);
+	printf("\nSTOCK 2 : %s\n", stock);
 	return (stock ? 1 : 0);
 }
