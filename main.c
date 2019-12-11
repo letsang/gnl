@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 14:54:32 by jtsang            #+#    #+#             */
-/*   Updated: 2019/11/28 09:38:35 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/09 11:24:51 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ int	main(int ac, char **av)
 		printf("%s", "open() error");
 		return (1);
 	}
-		
-	while (get_next_line(fd, &line))
+	
+	while ((get_next_line(fd, &line)))
 	{
-		printf("%s", line);
-		printf("%c", '\n');
+		printf("LINE : %s\n", line);
+		free(line);
 	}
 	
 	if (close(fd) == -1)

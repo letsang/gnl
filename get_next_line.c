@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/10 14:35:15 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 13:42:52 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*ft_strchr(const char *s, int c)
 char	*get_stock(int fd, char **stock)
 {
 	char			*buf;
+	char			*tmp;
 	int				ret;
 
 	ret = 1;
@@ -64,7 +65,13 @@ char	*get_stock(int fd, char **stock)
 			return (NULL);
 		}
 		buf[ret] = '\0';
-		*stock = ft_strjoin(*stock, buf);
+		tmp = *stock;
+		*stock = ft_strjoin(tmp, buf);
+//		if (tmp)
+//		{
+//			free(tmp);
+//			tmp = NULL;
+//		}
 		free(buf);
 	}
 	return (*stock);

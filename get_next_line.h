@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 07:01:56 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/10 13:50:55 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 12:52:48 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strnew(size_t size);
 size_t	ft_strlen(const char *s);
+char	*free_join_stock(char *stock, char *buf);
 char	*ft_strjoin(char *s1, char *s2);
 char	*get_stock(int fd, char **stock);
 char	*get_newline(char **stock);
