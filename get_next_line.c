@@ -6,7 +6,7 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:36:24 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/11 13:42:52 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 15:50:49 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,7 @@ char	*get_stock(int fd, char **stock)
 		buf[ret] = '\0';
 		tmp = *stock;
 		*stock = ft_strjoin(tmp, buf);
-//		if (tmp)
-//		{
-//			free(tmp);
-//			tmp = NULL;
-//		}
+		free(tmp);
 		free(buf);
 	}
 	return (*stock);
@@ -86,7 +82,8 @@ char	*get_newline(char **stock)
 	if ((newstock = ft_strchr(*stock, '\n')))
 	{
 		newline = ft_substr(*stock, 0, ft_strlen(*stock) - ft_strlen(newstock));
-		*stock = newstock + 1;
+		free(*stock);
+		*stock = ft_strdup(newstock + 1);
 	}
 	else
 	{
@@ -107,6 +104,7 @@ int		get_next_line(int fd, char **line)
 	if (!(stock = get_stock(fd, &stock)))
 		return (-1);
 	if (stock && !(*line = get_newline(&stock)))
-			return (-1);
+		return (-1);
+//	printf("\nSTOCK : %s\n", stock);
 	return (stock ? 1 : 0);
 }
