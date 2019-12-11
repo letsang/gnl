@@ -6,11 +6,12 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 14:54:32 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/11 16:25:45 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 18:06:17 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 int	main(int ac, char **av)
 {

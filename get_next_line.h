@@ -6,24 +6,19 @@
 /*   By: jtsang <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 07:01:56 by jtsang            #+#    #+#             */
-/*   Updated: 2019/12/11 12:52:48 by jtsang           ###   ########.fr       */
+/*   Updated: 2019/12/11 18:07:21 by jtsang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #		ifndef GET_NEXT_LINE_H
 #		define GET_NEXT_LINE_H
 
+#		include <fcntl.h>
+#		include <sys/types.h>
+#		include <sys/uio.h>
 #		include <stdlib.h>
 #		include <string.h>
 #		include <unistd.h>
-
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-#include <stdio.h>
 
 char	*ft_strdup(char *s1);
 char	*ft_substr(char *s, unsigned int start, size_t len);
